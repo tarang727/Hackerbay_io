@@ -1,5 +1,6 @@
 # Hackerbay_io
 
+## Node.js Backend
 ### Endpoints
 The API features the following endpoint functionalities  
 
@@ -34,7 +35,7 @@ ___
     * Used [esLint](https://eslint.org) for Javascript Style and Linting.
     * Included a working Dockerfile with the app directory
     
-## INSTRUCTIONS
+### INSTRUCTIONS
 1. Clone the repository
   ```
   $> git clone https://github.com/tarang727/Hackerbay_io.git
@@ -51,3 +52,13 @@ ___
   ```
   $> npm start
   ```    
+
+
+## ReactJS Frontend
+
+Node.js >=8.0.0 should be installed plus `typescript` - `npm i -g typescript`
+
+1. git clone the repository https://github.com/tarang727/Hackerbay_io.git
+2. go to reactJS_frontend folder `$ cd reactJS_frontend`
+3. install dependencies `$ npm install`
+4. `$ npm start` to start frontend server. Go to `http://localhost:3000/` to check out the game.
