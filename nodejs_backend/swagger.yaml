@@ -1,0 +1,229 @@
+swagger: "2.0"
+host: localhost:8080
+schemes: [http]
+info: 
+  title: Microservice for Hackerbay 
+  description: API for Authentication, JSON Patching, and Thumbnail Generation.
+  version: 1.0.0
+paths:
+  /login:
+    post:
+      summary: Authenticates a user.
+      description: Takes in any username and password and returns a JWT
+      consumes: 
+        - application/x-www-form-urlencoded
+      produces: 
+        - application/json
+      parameters: 
+        - in: formData
+          name: username
+          required: true
+          type: string
+          description: Any username is valid
+        - in: formData
+          name: password
+          required: true
+          type: string
+          description: Any password is valid
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              token:
+                type: string
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGFyYW5nIiwicGFzc3dvcmQiOiJiYXJ1YSJ9LCJpYXQiOjE1MzQ2NTIzMDUsImV4cCI6MTUzNTUxNjMwNX0.7IqxGAEeaVe4kicfqhZ7ydvDDurc4sFutl3j9XDJn3U
+        400:
+          description: Parameter(s) Missing
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Please pass the username and password in the form.
+  /home:
+    get:
+      summary: Gets the user data.
+      description: Returns the decoded username and password from JWT.
+      produces: 
+        - application/json
+      parameters: 
+        - in: header
+          name: token
+          type: string
+          required: true
+          description: A valid JWT
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              user:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    example: "rahul"
+                  password:
+                    type: string
+                    example: "password"
+              iat:
+                type: integer
+                example: 6717506678
+              exp:
+                type: integer
+                example: 2433555545
+        400:
+          description: Parameter(s) Missing.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "No token provided."
+        403:
+          description: Invalid Token.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "Incorrect Token. Authenticaion Failed."
+  /home/apply_json_patch:
+    post:
+      summary: Performs JSON patching.
+      description: Takes in JSON object and JSON patch array and returns a final JSON object.
+      produces: 
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: token
+          type: string
+          required: true
+          description: A valid JWT
+        - in: body
+          name: Object
+          required: true
+          description: A JSON object.
+          schema:
+            type: object
+            required: 
+              - obj
+              - json_patch
+            properties:
+              obj:
+                type: object
+                description: Any JSON object.
+              json_patch:
+                type: array
+                description: A valid JSON patch array.
+                items:
+                  type: object
+                  example: {"op": "add", "path": "/user", "value": "name"}
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              foo:
+                type: string
+                example: bar
+        400:
+          description: Parameter(s) missing.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "JSON object and/or JSON patch array missing"
+        403:
+          description: Invalid Token.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "Incorrect Token. Authenticaion Failed."
+  /home/create_thumbnail:
+    post:
+      summary: Generates Thumbnail.
+      description: Takes in a public image url and returns the image resized to 50x50 pixels
+      consumes: 
+        - application/x-www-form-urlencoded
+      produces: 
+        - string
+        - application/json
+      parameters:
+        - in: header
+          name: token
+          type: string
+          required: true
+          description: A valid JWT
+        - in: formData
+          name: image_url
+          type: string
+          required: true
+          description: A public image URL.
+      responses:
+        200:
+          description: OK
+          schema:
+            type: string
+            example: "<img src='data:image/png;base64,iv8BoO...'>"
+        400:
+          description: Parameter(s) Missing.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "Image URL missing"
+        500:
+          description: URL problem.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "Read unsuccessful from given URL"
+        403:
+          description: Invalid Token.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "Incorrect Token. Authenticaion Failed."
+                
