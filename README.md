@@ -67,4 +67,4 @@ ___
 5. Start the game in development mode with:
 ```
   npm start
-``
+```
