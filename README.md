@@ -56,9 +56,15 @@ ___
 
 ## ReactJS Frontend
 
-Node.js >=8.0.0 should be installed plus `typescript` - `npm i -g typescript`
-
 1. git clone the repository https://github.com/tarang727/Hackerbay_io.git
 2. go to reactJS_frontend folder `$ cd reactJS_frontend`
 3. install dependencies `$ npm install`
-4. `$ npm start` to start frontend server. Go to `http://localhost:3000/` to check out the game.
+4. Start the game in production mode with:
+```
+  npm serve
+```
+
+5. Start the game in development mode with:
+```
+  npm start
+``
